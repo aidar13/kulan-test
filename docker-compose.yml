@@ -1,0 +1,47 @@
+version: '3.5'
+services:
+
+    #APP
+    app:
+        build:
+            context: .
+            dockerfile: docker/php/Dockerfile
+        image: digitalocean.com/php
+        container_name: web-app
+        restart: unless-stopped
+        tty: true
+        environment:
+            SERVICE_NAME: app
+            SERVICE_TAGS: dev
+        env_file:
+            - ./docker/app.env
+        working_dir: /srv/www
+        volumes:
+            - ./:/srv/www
+            - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+
+    #Nginx
+    web-server:
+        build:
+            context: .
+            dockerfile: docker/nginx/Dockerfile
+        container_name: web-server
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "80:80"
+        volumes:
+            - ./:/srv/www
+
+    #Database
+    database:
+        container_name: my-db
+        image: 'mariadb:latest'
+        environment:
+            - MYSQL_ROOT_PASSWORD=docker
+        volumes:
+            - ./docker/database/data:/var/lib/mysql
+            - ./docker/database/dump:/srv/dump
+            - ./docker/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+        ports:
+            - "3307:3306"
