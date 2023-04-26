@@ -11,6 +11,11 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 final class CityQuery implements CityQueryContract
 {
+    public function findById(int $id): City
+    {
+        return City::firstOrFail('id', $id);
+    }
+
     public function getAll(CityDTO $DTO): LengthAwarePaginator
     {
         return City::query()

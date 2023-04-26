@@ -17,3 +17,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/cities', [CityController::class, 'index'])->name('cities.index');
 Route::post('/register', [RegisterController::class, '__invoke'])->name('register');
+
+
+//Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::post('/applications', [ApplicationController::class, 'store'])->name('applications.store');
+//});
