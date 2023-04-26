@@ -6,13 +6,8 @@ namespace App\Http\Handlers;
 
 use App\Http\Commands\RegisterCommand;
 use App\Http\Contracts\Queries\UserQuery;
-use App\Http\DTO\RegisterDTO;
 use App\Models\User;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Sanctum\PersonalAccessToken;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 final class RegisterHandler
 {
@@ -20,7 +15,7 @@ final class RegisterHandler
     {
     }
 
-    public function handle(RegisterCommand $command): ?PersonalAccessToken
+    public function handle(RegisterCommand $command): void
     {
         $user = $this->userQuery->findByEmail($command->DTO->email);
 
@@ -33,30 +28,5 @@ final class RegisterHandler
         }
 
         $user->cities()->attach($command->DTO->cityId);
-
-        return $this->getToken($user, $command->DTO);
-    }
-
-    private function getToken(User $user, RegisterDTO $registerDTO): PersonalAccessToken
-    {
-        $credentials = [
-            'email'    => $registerDTO->email,
-            'password' => $registerDTO->password
-        ];
-
-        if (!Auth::guard('web')->attempt($credentials)) {
-            throw new NotFoundHttpException('User not found');
-        }
-
-        /** @var User $user */
-        $user = Auth::guard('web')->user();
-
-        $tokenResult       = $user->createToken('Personal Access Token')->accessToken;
-
-        $token             = $tokenResult;
-        $token->expires_at = Carbon::now()->addDay();
-        $token->save();
-
-        return $token;
     }
 }

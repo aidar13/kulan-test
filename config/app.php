@@ -175,6 +175,8 @@ return [
         // Register app provider
         \App\Http\Providers\RegisterServiceProvider::class,
 
+        Laravel\Passport\PassportServiceProvider::class,
+
     ])->toArray(),
 
     /*

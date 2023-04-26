@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Commands\RegisterCommand;
 use App\Http\Requests\RegisterRequest;
-use App\Http\Resources\TokenResource;
+use App\Http\Resources\MessagesResource;
 use Illuminate\Contracts\Bus\Dispatcher;
 
 class RegisterController extends Controller
@@ -15,14 +15,15 @@ class RegisterController extends Controller
 
     /**
      * @param RegisterRequest $request
-     * @return TokenResource
+     * @return MessagesResource
      */
-    public function __invoke(RegisterRequest $request): TokenResource
+    public function __invoke(RegisterRequest $request): MessagesResource
     {
         $command = new RegisterCommand($request->getDTO());
 
-        $tokenResult = $this->dispatcher->dispatch($command);
+        $this->dispatcher->dispatch($command);
 
-        return new TokenResource($tokenResult);
+        return (new MessagesResource(null))
+            ->setMessage('Успешная регистрация!');
     }
 }

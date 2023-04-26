@@ -21,6 +21,7 @@ final class CreateApplicationHandler
 
         $application                   = new Application();
         $application->user_id          = $command->userId;
+        $application->take_date        = $command->DTO->takeDate;
         $application->from_city_id     = $senderCity->id;
         $application->to_city_id       = $receiverCity->id;
         $application->sender_address   = $command->DTO->senderAddress;

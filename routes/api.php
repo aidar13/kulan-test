@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
@@ -16,9 +17,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/cities', [CityController::class, 'index'])->name('cities.index');
-Route::post('/register', [RegisterController::class, '__invoke'])->name('register');
+Route::post('/register', RegisterController::class)->name('register');
 
 
-//Route::group(['middleware' => 'auth:sanctum'], function () {
+Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/applications', [ApplicationController::class, 'store'])->name('applications.store');
-//});
+});
