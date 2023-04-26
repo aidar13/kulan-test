@@ -1,4 +1,4 @@
-FROM php:8.1-fpm-alpine
+FROM php:8.1-fpm
 
 # set main params
 ENV APP_HOME /srv/www
@@ -26,12 +26,11 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean
 
-# create document root, fix permissions for www-data user and change owner to www-data
-RUN mkdir -p $APP_HOME/public && \
-    mkdir -p /home/$USERNAME && chown $USERNAME:$USERNAME /home/$USERNAME \
-    && usermod -o -u 1000 $USERNAME -d /home/$USERNAME \
-    && groupmod -o -g 1000 $USERNAME \
-    && chown -R ${USERNAME}:${USERNAME} $APP_HOME
+RUN deluser www-data && \
+    useradd -ms /bin/sh www-data && \
+    echo 'www-data    ALL=(root) NOPASSWD: /bin/sed, /bin/echo, /bin/cp, /usr/sbin/crond' >> /etc/sudoers && \
+    mkdir -p /home/www-data/.composer && \
+    chown -R www-data:www-data /home/www-data
 
 # put php config for Laravel
 COPY ./docker/nginx/www.conf /usr/local/etc/php-fpm.d/www.conf
@@ -44,7 +43,6 @@ ENV COMPOSER_ALLOW_SUPERUSER 1
 
 # set working directory
 WORKDIR $APP_HOME
-
 USER ${USERNAME}
 
 # copy source files and config file
@@ -54,4 +52,3 @@ COPY --chown=${USERNAME}:${USERNAME} .env.local $APP_HOME/.env
 # install all PHP dependencies
 RUN COMPOSER_MEMORY_LIMIT=-1 composer install --optimize-autoloader --no-interaction --no-progress;
 
-USER root
