@@ -28,7 +28,7 @@ use Laravel\Sanctum\PersonalAccessToken;
  * )
  * @property PersonalAccessToken $resource
  */
-class TokenResource extends JsonResource
+class TokenResource extends BaseJsonResource
 {
     public static $wrap = null;
 
