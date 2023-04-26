@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\DTO;
 
-use App\Http\Requests\CityRequest;
+use App\Http\Requests\CityShowRequest;
 
 final class CityDTO
 {
@@ -12,7 +12,7 @@ final class CityDTO
     public int $limit;
     public int $page;
 
-    public static function fromRequest(CityRequest $request): CityDTO
+    public static function fromRequest(CityShowRequest $request): CityDTO
     {
         $self            = new self();
         $self->countryId = $request->has('countryId') ? (int)$request->get('countryId') : null;

@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read User $user
  * @property-read Dictionary $status
  * @property-read City $fromCity
- * @property-read City $whereCity
+ * @property-read City $toCity
  */
 class Application extends Model
 {
@@ -48,7 +48,7 @@ class Application extends Model
         return $this->belongsTo(City::class, 'from_city_id', 'id');
     }
 
-    public function whereCity(): BelongsTo
+    public function toCity(): BelongsTo
     {
         return $this->belongsTo(City::class, 'to_city_id', 'id');
     }

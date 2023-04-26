@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use App\Http\DTO\CityDTO;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CityRequest extends FormRequest
+class CityShowRequest extends FormRequest
 {
     public function rules(): array
     {
