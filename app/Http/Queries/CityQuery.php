@@ -13,7 +13,7 @@ final class CityQuery implements CityQueryContract
 {
     public function findById(int $id): City
     {
-        return City::firstOrFail('id', $id);
+        return City::where('id', $id)->firstOrFail();
     }
 
     public function getAll(CityDTO $DTO): LengthAwarePaginator

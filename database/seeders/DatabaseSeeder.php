@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\City;
 use App\Models\Country;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,6 +15,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->seedRegions();
+        $this->seedRoles();
     }
 
     private function seedRegions(): void
@@ -25,5 +27,11 @@ class DatabaseSeeder extends Seeder
         {
             City::factory()->count(5)->create(['country_id' => $country->id]);
         }
+    }
+
+    private function seedRoles(): void
+    {
+        Role::create(['name' => 'admin']);
+        Role::create(['name' => 'user']);
     }
 }
