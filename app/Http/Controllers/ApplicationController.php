@@ -57,6 +57,6 @@ final class ApplicationController extends Controller
         dispatch(new MergeApplicationsCommand($request->get('applicationIds')));
 
         return (new MessagesResource(null))
-            ->setMessage('Успешный ');
+            ->setMessage('Успешный ответ');
     }
 }

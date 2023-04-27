@@ -23,7 +23,7 @@ final class DictionaryResource extends BaseJsonResource
     public function toArray($request): array
     {
         return [
-            'id'   => $this->resource->id,
+            'id'    => $this->resource->id,
             'title' => $this->resource->title,
         ];
     }

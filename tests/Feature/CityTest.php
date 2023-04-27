@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\City;
 use App\Models\Country;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -21,12 +22,14 @@ class CityTest extends TestCase
 
     public function testGetAllCities()
     {
+        $user = User::factory()->create();
+
         /** @var Country $country */
         $country = Country::factory()->create();
 
         $cities = City::factory()->count(5)->create(['country_id' => $country->id]);
 
-        $response = $this->get(route('cities.index'));
+        $response = $this->actingAs($user)->get(route('cities.index'));
 
         $response->assertStatus(200)
             ->assertJsonStructure([
