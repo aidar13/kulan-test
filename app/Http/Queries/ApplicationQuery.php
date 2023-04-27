@@ -14,7 +14,7 @@ final class ApplicationQuery implements ApplicationQueryContract
 {
     public function findById(int $id): Application
     {
-        return Application::firstOrFail('id', $id);
+        return Application::where('id', $id)->firstOrFail();
     }
 
     public function getAll(ApplicationDTO $DTO): LengthAwarePaginator
