@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property int $id
+ * @property int $order_id
  * @property int $user_id
  * @property int $status_id
  * @property CarbonImmutable $take_date
@@ -22,6 +23,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read Dictionary $status
  * @property-read City $fromCity
  * @property-read City $toCity
+ * @property-read Order $order
  */
 class Application extends Model
 {
@@ -51,6 +53,11 @@ class Application extends Model
     public function toCity(): BelongsTo
     {
         return $this->belongsTo(City::class, 'to_city_id', 'id');
+    }
+
+    public function order(): BelongsTo
+    {
+        return $this->belongsTo(Order::class, 'order_id', 'id');
     }
 
     public function setStatus(int $statusId): void

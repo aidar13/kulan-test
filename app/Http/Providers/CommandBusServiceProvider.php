@@ -3,9 +3,13 @@
 namespace App\Http\Providers;
 
 use App\Http\Commands\CreateApplicationCommand;
+use App\Http\Commands\MergeApplicationsCommand;
 use App\Http\Commands\RegisterCommand;
+use App\Http\Commands\RejectApplicationCommand;
 use App\Http\Handlers\CreateApplicationHandler;
+use App\Http\Handlers\MergeApplicationsHandler;
 use App\Http\Handlers\RegisterHandler;
+use App\Http\Handlers\RejectApplicationHandler;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\ServiceProvider;
 
@@ -26,6 +30,8 @@ class CommandBusServiceProvider extends ServiceProvider
         Bus::map([
             RegisterCommand::class          => RegisterHandler::class,
             CreateApplicationCommand::class => CreateApplicationHandler::class,
+            RejectApplicationCommand::class => RejectApplicationHandler::class,
+            MergeApplicationsCommand::class => MergeApplicationsHandler::class,
         ]);
     }
 }

@@ -6,7 +6,6 @@ services:
         build:
             context: .
             dockerfile: docker/php/Dockerfile
-        image: digitalocean.com/php
         container_name: web-app
         restart: unless-stopped
         tty: true
@@ -19,6 +18,8 @@ services:
         volumes:
             - ./:/srv/www
             - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+            - ./docker/nginx/www.conf:/usr/local/etc/php-fpm.d/www.conf
+            - ./docker/php/php.ini:/usr/local/etc/php/php.ini
 
     #Nginx
     web-server:
@@ -32,6 +33,8 @@ services:
             - "81:80"
         volumes:
             - ./:/srv/www
+            - ./docker/nginx/www.conf:/usr/local/etc/php-fpm.d/www.conf
+            - ./docker/php/php.ini:/usr/local/etc/php/php.ini
 
     #Database
     database:
@@ -42,6 +45,5 @@ services:
         volumes:
             - ./docker/database/data:/var/lib/mysql
             - ./docker/database/dump:/srv/dump
-            - ./docker/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
         ports:
             - "3307:3306"

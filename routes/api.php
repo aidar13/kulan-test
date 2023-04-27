@@ -23,4 +23,6 @@ Route::post('/register', RegisterController::class)->name('register');
 Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/applications', [ApplicationController::class, 'index'])->name('applications.index');
     Route::post('/applications', [ApplicationController::class, 'store'])->name('applications.store');
+    Route::post('/applications/{id}/reject', [ApplicationController::class, 'reject'])->name('applications.reject');
+    Route::post('/applications/merge-applications', [ApplicationController::class, 'mergeApplications'])->name('applications.merge-applications');
 });

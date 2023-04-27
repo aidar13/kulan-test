@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Commands\CreateApplicationCommand;
+use App\Http\Commands\MergeApplicationsCommand;
+use App\Http\Commands\RejectApplicationCommand;
 use App\Http\Contracts\Queries\ApplicationQuery;
 use App\Http\Requests\ApplicationShowRequest;
 use App\Http\Requests\CreateApplicationRequest;
+use App\Http\Requests\MergeApplicationsRequest;
 use App\Http\Resources\ApplicationsResource;
 use App\Http\Resources\MessagesResource;
 use Illuminate\Support\Facades\Auth;
@@ -39,5 +42,21 @@ final class ApplicationController extends Controller
 
         return (new MessagesResource(null))
             ->setMessage('Заявка успешно создана!');
+    }
+
+    public function reject(int $id): MessagesResource
+    {
+        dispatch(new RejectApplicationCommand($id));
+
+        return (new MessagesResource(null))
+            ->setMessage('Заявка отклонена!');
+    }
+
+    public function mergeApplications(MergeApplicationsRequest $request): MessagesResource
+    {
+        dispatch(new MergeApplicationsCommand($request->get('applicationIds')));
+
+        return (new MessagesResource(null))
+            ->setMessage('Успешный ');
     }
 }
